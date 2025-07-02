@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const ApplicationsTable = () => {
+const ApplicationsTable = ({ activeTab }) => {
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
@@ -19,8 +19,9 @@ const ApplicationsTable = () => {
 
   return (
     <div className="w-[1300px] h-auto bg-white border border-[#E5ECFB] rounded-[16px] p-4 flex flex-col gap-6 shadow-sm box-border">
+      {/* Top Controls */}
       <div className="flex justify-between items-center flex-wrap gap-4">
-        <h2 className="text-lg font-semibold">All Applications</h2>
+        <h2 className="text-lg font-semibold">{activeTab}</h2>
 
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center bg-white border border-[#E2EAFB] rounded-lg px-3 h-10 w-60">
@@ -31,7 +32,7 @@ const ApplicationsTable = () => {
           </div>
 
           <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-40 gap-2">
-            <span className="text-sm">Filters: Date</span>
+            <span className="text-sm">Filter</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
@@ -83,7 +84,9 @@ const ApplicationsTable = () => {
                 <td className="px-3 py-4 text-sm text-gray-500 w-[25%]">SecureFuture Plan</td>
                 <td className="px-3 py-4 text-sm text-gray-500 w-[15%]">01-04-2025</td>
                 <td className="px-3 py-4 text-sm text-gray-500 w-[15%] text-right">
-                  <button className="text-blue-600 hover:text-blue-800">Review</button>
+                  <button className="px-4 py-1 text-sm font-medium text-[#FFD700] border border-[#FFD700] bg-white rounded-md hover:opacity-90 transition">
+                    Review
+                  </button>
                 </td>
               </tr>
             ))}
@@ -93,6 +96,7 @@ const ApplicationsTable = () => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center px-3 w-full h-[43px] mt-4">
+        {/* Items per page - Left */}
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Items per page</span>
           <select className="bg-[#EAEFFB] text-sm text-blue-600 font-medium rounded-[8px] px-3 py-2 h-[43px] w-[58px]">
@@ -102,7 +106,8 @@ const ApplicationsTable = () => {
           </select>
         </div>
 
-        <div className="flex items-center gap-6 w-[506px] mx-auto justify-center h-[43px]">
+        {/* Page navigation - Right */}
+        <div className="flex items-center gap-2 h-[43px]">
           <button className="flex items-center px-3 py-2 gap-2 text-sm text-black rounded-[8px] hover:bg-[#EAEFFB]">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
