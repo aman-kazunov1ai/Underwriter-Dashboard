@@ -18,34 +18,34 @@ const ApplicationsTable = ({ activeTab }) => {
   }, []);
 
   return (
-    <div className="w-[1300px] h-auto bg-white border border-[#E5ECFB] rounded-[16px] p-4 flex flex-col gap-6 shadow-sm box-border">
+    <div className="w-full bg-white border border-[#E5ECFB] rounded-[16px] p-4 flex flex-col gap-6 shadow-sm box-border overflow-hidden">
       {/* Top Controls */}
-      <div className="flex justify-between items-center flex-wrap gap-4">
-        <h2 className="text-lg font-semibold">{activeTab}</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-base sm:text-lg font-semibold">{activeTab}</h2>
 
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center bg-white border border-[#E2EAFB] rounded-lg px-3 h-10 w-60">
+        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+          <div className="flex items-center bg-white border border-[#E2EAFB] rounded-lg px-3 h-10 w-full sm:w-60">
             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input type="text" placeholder="Search from table..." className="ml-2 outline-none w-full text-sm" />
           </div>
 
-          <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-40 gap-2">
+          <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-full sm:w-40 gap-2">
             <span className="text-sm">Filter</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
 
-          <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-28 gap-2">
+          <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-full sm:w-28 gap-2">
             <span className="text-sm">Sort</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
 
-          <button className="flex items-center bg-[#0463FF] rounded-lg px-3 h-10 w-44 gap-2">
+          <button className="flex items-center bg-[#0463FF] rounded-lg px-3 h-10 w-full sm:w-44 gap-2">
             <span className="text-white text-sm">Add New Customer</span>
             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -56,34 +56,34 @@ const ApplicationsTable = ({ activeTab }) => {
 
       {/* Table Header */}
       <div
-        className="flex items-center px-3 h-[54px] rounded-t-lg"
+        className="hidden sm:flex items-center px-3 h-[54px] rounded-t-lg"
         style={{
           background: 'linear-gradient(269.75deg, #7AA5FF -2.69%, #3371F2 -2.68%, #0F1522 114.27%), #D6E3FC',
           borderBottom: '1px solid rgba(15, 1, 42, 0.1)',
         }}
       >
-        <div className="flex w-full">
-          <div className="w-[15%] text-white font-medium text-sm">Customer Proposal Number</div>
-          <div className="w-[10%] text-white font-medium text-sm">Customer ID</div>
-          <div className="w-[20%] text-white font-medium text-sm">Customer Name</div>
-          <div className="w-[25%] text-white font-medium text-sm">Product Name</div>
-          <div className="w-[15%] text-white font-medium text-sm">Date</div>
-          <div className="w-[15%] text-right text-white font-medium text-sm">Action</div>
+        <div className="flex w-full gap-4">
+          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Customer Proposal Number</div>
+          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Customer ID</div>
+          <div className="flex-[1.5] text-white font-medium text-sm text-center whitespace-nowrap">Customer Name</div>
+          <div className="flex-[2] text-white font-medium text-sm text-center whitespace-nowrap">Product Name</div>
+          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Date</div>
+          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Action</div>
         </div>
       </div>
 
       {/* Table Body */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full">
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-[700px] w-full">
           <tbody className="divide-y divide-gray-200">
             {customers.map((cust, index) => (
-              <tr key={cust.customer_id} className="hover:bg-gray-50">
-                <td className="px-3 py-4 text-sm text-gray-500 w-[15%]">00{index + 1}</td>
-                <td className="px-3 py-4 text-sm text-gray-500 w-[10%]">{cust.customer_id}</td>
-                <td className="px-3 py-4 text-sm text-gray-500 w-[20%]">{cust.customer_name}</td>
-                <td className="px-3 py-4 text-sm text-gray-500 w-[25%]">SecureFuture Plan</td>
-                <td className="px-3 py-4 text-sm text-gray-500 w-[15%]">01-04-2025</td>
-                <td className="px-3 py-4 text-sm text-gray-500 w-[15%] text-right">
+              <tr key={cust.customer_id} className="flex w-full gap-4 px-3 py-4 items-center justify-center hover:bg-gray-50">
+                <td className="flex-1 text-sm text-gray-500 text-center">00{index + 1}</td>
+                <td className="flex-1 text-sm text-gray-500 text-center">{cust.customer_id}</td>
+                <td className="flex-[1.5] text-sm text-gray-500 text-center">{cust.customer_name}</td>
+                <td className="flex-[2] text-sm text-gray-500 text-center">SecureFuture Plan</td>
+                <td className="flex-1 text-sm text-gray-500 text-center">01-04-2025</td>
+                <td className="flex-1 text-sm text-gray-500 text-center">
                   <button className="px-4 py-1 text-sm font-medium text-[#FFD700] border border-[#FFD700] bg-white rounded-md hover:opacity-90 transition">
                     Review
                   </button>
@@ -95,8 +95,8 @@ const ApplicationsTable = ({ activeTab }) => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center px-3 w-full h-[43px] mt-4">
-        {/* Items per page - Left */}
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-3 w-full mt-4">
+        {/* Items per page */}
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Items per page</span>
           <select className="bg-[#EAEFFB] text-sm text-blue-600 font-medium rounded-[8px] px-3 py-2 h-[43px] w-[58px]">
@@ -106,8 +106,8 @@ const ApplicationsTable = ({ activeTab }) => {
           </select>
         </div>
 
-        {/* Page navigation - Right */}
-        <div className="flex items-center gap-2 h-[43px]">
+        {/* Page navigation */}
+        <div className="flex items-center gap-2 h-[43px] flex-wrap justify-center sm:justify-end">
           <button className="flex items-center px-3 py-2 gap-2 text-sm text-black rounded-[8px] hover:bg-[#EAEFFB]">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

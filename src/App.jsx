@@ -2,7 +2,7 @@ import Dashboard from './components/Dashboard';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F3F5F9]">
       <Dashboard />
     </div>
   );
