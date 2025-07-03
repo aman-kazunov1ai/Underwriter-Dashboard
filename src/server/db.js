@@ -1,4 +1,3 @@
-// db.js
 import { Client } from 'pg';
 
 const client = new Client({
@@ -6,7 +5,7 @@ const client = new Client({
   port: 5432,
   user: 'kazunov1aidev',
   password: 'underwriter-team',
-  database: 'postgres', // Replace with actual DB name
+  database: 'postgres',
   ssl: {
     rejectUnauthorized: false,
   },
