@@ -56,34 +56,52 @@ const ApplicationsTable = ({ activeTab }) => {
 
       {/* Table Header */}
       <div
-        className="hidden sm:flex items-center px-3 h-[54px] rounded-t-lg"
+        className="hidden sm:flex items-center h-[54px] rounded-[12px] w-full"
         style={{
           background: 'linear-gradient(269.75deg, #7AA5FF -2.69%, #3371F2 -2.68%, #0F1522 114.27%), #D6E3FC',
           borderBottom: '1px solid rgba(15, 1, 42, 0.1)',
         }}
       >
-        <div className="flex w-full gap-4">
-          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Customer Proposal Number</div>
-          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Customer ID</div>
-          <div className="flex-[1.5] text-white font-medium text-sm text-center whitespace-nowrap">Customer Name</div>
-          <div className="flex-[2] text-white font-medium text-sm text-center whitespace-nowrap">Product Name</div>
-          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Date</div>
-          <div className="flex-1 text-white font-medium text-sm text-center whitespace-nowrap">Action</div>
+        <div className="flex w-full h-full">
+          <div className="flex-0.5 px-4 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+  Customer Proposal Number
+</div>
+          <div className="flex-1 px-1 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+            Customer ID
+          </div>
+          <div className="flex-1 px-1 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+            Customer Name
+          </div>
+          <div className="flex-1 px-4 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+            Product Name
+          </div>
+          <div className="flex-1 px-4 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+            Date
+          </div>
+          <div className="flex-1 px-4 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+            View Details
+          </div>
         </div>
       </div>
 
       {/* Table Body */}
       <div className="w-full overflow-x-auto">
         <table className="min-w-[700px] w-full">
-          <tbody className="divide-y divide-gray-200">
+          <tbody>
             {customers.map((cust, index) => (
-              <tr key={cust.customer_id} className="flex w-full gap-4 px-3 py-4 items-center justify-center hover:bg-gray-50">
-                <td className="flex-1 text-sm text-gray-500 text-center">00{index + 1}</td>
-                <td className="flex-1 text-sm text-gray-500 text-center">{cust.customer_id}</td>
-                <td className="flex-[1.5] text-sm text-gray-500 text-center">{cust.customer_name}</td>
-                <td className="flex-[2] text-sm text-gray-500 text-center">SecureFuture Plan</td>
-                <td className="flex-1 text-sm text-gray-500 text-center">01-04-2025</td>
-                <td className="flex-1 text-sm text-gray-500 text-center">
+              <tr
+                key={cust.customer_id}
+                className="flex w-full gap-4 px-3 py-4 items-center justify-center"
+                style={{
+                  backgroundColor: index % 2 === 0 ? 'rgba(234, 239, 251, 0.5)' : '#FFFFFF',
+                }}
+              >
+                <td className="flex-1 text-sm text-gray-700 text-left">00{index + 1}</td>
+                <td className="flex-[1] text-sm text-gray-700 text-left">{cust.customer_id}</td>
+                <td className="flex-[.8] text-sm text-gray-700 text-left">{cust.customer_name}</td>
+                <td className="flex-[1] text-sm text-gray-700 text-left">SecureFuture Plan</td>
+                <td className="flex-[0.5] text-sm text-gray-700 text-left">01-04-2025</td>
+                <td className="flex-1 text-sm text-gray-700 text-center">
                   <button className="px-4 py-1 text-sm font-medium text-[#FFD700] border border-[#FFD700] bg-white rounded-md hover:opacity-90 transition">
                     Review
                   </button>
@@ -96,7 +114,6 @@ const ApplicationsTable = ({ activeTab }) => {
 
       {/* Pagination */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-3 w-full mt-4">
-        {/* Items per page */}
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Items per page</span>
           <select className="bg-[#EAEFFB] text-sm text-blue-600 font-medium rounded-[8px] px-3 py-2 h-[43px] w-[58px]">
@@ -106,7 +123,6 @@ const ApplicationsTable = ({ activeTab }) => {
           </select>
         </div>
 
-        {/* Page navigation */}
         <div className="flex items-center gap-2 h-[43px] flex-wrap justify-center sm:justify-end">
           <button className="flex items-center px-3 py-2 gap-2 text-sm text-black rounded-[8px] hover:bg-[#EAEFFB]">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
