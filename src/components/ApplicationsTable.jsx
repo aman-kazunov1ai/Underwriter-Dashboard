@@ -1,7 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const ApplicationsTable = ({ activeTab }) => {
   const [customers, setCustomers] = useState([]);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [selectedSort, setSelectedSort] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const filterRef = useRef(null);
+  const sortRef = useRef(null);
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -17,13 +28,45 @@ const ApplicationsTable = ({ activeTab }) => {
     fetchCustomers();
   }, []);
 
+  // Handle click outside for closing dropdowns
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (filterRef.current && !filterRef.current.contains(e.target)) {
+        setShowFilterDropdown(false);
+        setShowDatePicker(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(e.target)) {
+        setShowSortDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSortSelect = (option) => {
+    setSelectedSort(option);
+    setShowSortDropdown(false);
+    // You can sort customers array here based on selection if needed
+  };
+
+  const handleFilterSelect = (option) => {
+    setSelectedFilter(option);
+    if (option === 'Date') {
+      setShowDatePicker(true);
+    } else {
+      setShowFilterDropdown(false);
+      setShowDatePicker(false);
+    }
+  };
+
   return (
-    <div className="w-full bg-white border border-[#E5ECFB] rounded-[16px] p-4 flex flex-col gap-6 shadow-sm box-border overflow-hidden">
+    <div className="w-full bg-white border border-[#E5ECFB] rounded-[16px] p-9 flex flex-col gap-3 shadow-sm box-border overflow-hidden">
       {/* Top Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-base sm:text-lg font-semibold">{activeTab}</h2>
 
-        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto relative">
+          {/* Search Box */}
           <div className="flex items-center bg-white border border-[#E2EAFB] rounded-lg px-3 h-10 w-full sm:w-60">
             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -31,20 +74,78 @@ const ApplicationsTable = ({ activeTab }) => {
             <input type="text" placeholder="Search from table..." className="ml-2 outline-none w-full text-sm" />
           </div>
 
-          <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-full sm:w-40 gap-2">
-            <span className="text-sm">Filter</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+          {/* Filter Button */}
+          <div className="relative" ref={filterRef}>
+            <button
+              onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+              className="relative w-auto sm:w-40 min-w-[150px] flex items-center justify-center bg-[#E2EAFB] rounded-md px-4 h-10 gap-2"
+            >
+              <span className="text-sm text-[#3371F2] font-pp font-medium tracking-wider3 leading-tight110 capitalize whitespace-nowrap">Filter {selectedFilter && `: ${selectedFilter}`}</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+              {/* <ChevronDown className="h-4 w-4 text-[#3371F2]" /> */}
+            </button>
 
-          <button className="flex items-center justify-center bg-[#E2EAFB] rounded-md px-6 h-10 w-full sm:w-28 gap-2">
-            <span className="text-sm">Sort</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            {showFilterDropdown && (
+              <div className="absolute top-12 left-0 bg-white shadow-lg rounded-md w-40 z-50 border">
+                {['Date', 'Status', 'Policy Type'].map((item) => (
+                  <div
+                    key={item}
+                    onMouseEnter={() => item === 'Date' && setShowDatePicker(true)}
+                    onClick={() => handleFilterSelect(item)}
+                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            )}
 
+            {/* Calendar */}
+            {showDatePicker && (
+              <div className="absolute top-12 left-44 z-50 bg-white border rounded-md shadow-lg p-2">
+                <DatePicker
+                  inline
+                  selected={selectedDate}
+                  onChange={(date) => {
+                    setSelectedDate(date);
+                    setShowDatePicker(false);
+                    setShowFilterDropdown(false);
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Sort Button */}
+          <div className="relative" ref={sortRef}>
+            <button
+              onClick={() => setShowSortDropdown(!showSortDropdown)}
+              className="frelative w-auto sm:w-40 min-w-[150px] flex items-center justify-center bg-[#E2EAFB] rounded-md px-4 h-10 gap-2"
+            >
+              <span className="text-sm text-[#3371F2] font-pp font-medium tracking-wider3 leading-tight110 capitalize whitespace-nowrap">Sort {selectedSort && `: ${selectedSort}`}</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {showSortDropdown && (
+              <div className="absolute top-12 left-0 bg-white shadow-lg rounded-md w-44 z-50 border">
+                {['Date', 'Name A-Z', 'Name Z-A', 'Status'].map((option) => (
+                  <div
+                    key={option}
+                    onClick={() => handleSortSelect(option)}
+                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm"
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Add Button */}
           <button className="flex items-center bg-[#0463FF] rounded-lg px-3 h-10 w-full sm:w-44 gap-2">
             <span className="text-white text-sm">Add New Customer</span>
             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +179,7 @@ const ApplicationsTable = ({ activeTab }) => {
           <div className="flex-1 px-4 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
             Date
           </div>
-          <div className="flex-1 px-4 py-2 text-left text-white text-sm font-medium border-r border-[#7BA3F6]">
+          <div className="flex-1 px-4 py-2 text-left text-white text-sm font-medium ">
             View Details
           </div>
         </div>
