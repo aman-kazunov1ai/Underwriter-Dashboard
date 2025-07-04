@@ -6,7 +6,7 @@ import cheverdown from '../assets/chevron-down.svg';
 import plus from '../assets/plus.svg';
 import arrowleft from '../assets/arrow-left.svg';
 import arrowright from '../assets/arrow-right.svg';
-import EllipsisOutlined from '../assets/EllipsisOutlined.svg';
+import EllipsisOutlined from '../assets/Vector.svg';
 
 const ApplicationsTable = ({ activeTab }) => {
   const [customers, setCustomers] = useState([]);
@@ -20,9 +20,11 @@ const ApplicationsTable = ({ activeTab }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const [showOptions, setShowOptions] = useState(null);
 
   const filterRef = useRef(null);
   const sortRef = useRef(null);
+  const optionsRef = useRef(null);
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -46,6 +48,9 @@ const ApplicationsTable = ({ activeTab }) => {
       }
       if (sortRef.current && !sortRef.current.contains(e.target)) {
         setShowSortDropdown(false);
+      }
+      if (optionsRef.current && !optionsRef.current.contains(e.target)) {
+        setShowOptions(null);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -80,7 +85,6 @@ const ApplicationsTable = ({ activeTab }) => {
           filtered.sort((a, b) => b.customer_name.localeCompare(a.customer_name));
           break;
         case 'Status':
-          // Implement if status is present in data
           break;
         default:
           break;
@@ -116,6 +120,23 @@ const ApplicationsTable = ({ activeTab }) => {
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+    }
+  };
+
+  const handleOptionsToggle = (customerId) => {
+    setShowOptions(showOptions === customerId ? null : customerId);
+  };
+
+  const handleEdit = (customerId) => {
+    alert(`Edit customer with ID: ${customerId}`);
+    // Add edit logic here
+    setShowOptions(null);
+  };
+
+  const handleDelete = (customerId) => {
+    if (window.confirm(`Are you sure you want to delete customer with ID: ${customerId}?`)) {
+      setCustomers(customers.filter((c) => c.customer_id !== customerId));
+      setShowOptions(null);
     }
   };
 
@@ -258,9 +279,33 @@ const ApplicationsTable = ({ activeTab }) => {
                   <div className="relative leading-5 font-medium">Review</div>
                 </div>
               </div>
-              <div className="w-[38px] bg-[#F9FAFB] border-b-[1px] border-[#D3D3D3] box-border h-[54px] flex flex-row items-center justify-center py-2 px-4 gap-1">
-                <div className="w-4 relative rounded bg-white border-[1px] border-[#D3D3D3] h-4 overflow-hidden shrink-0 hidden" />
-                <img src={EllipsisOutlined} alt="Options" className="w-[22px]" />
+              <div className="w-[38px] border-b-[1px] border-[#D3D3D3] box-border h-[54px] flex flex-row items-center justify-center py-2 px-4 gap-1 relative">
+                <button
+                  onClick={() => handleOptionsToggle(cust.customer_id)}
+                  className="w-3 h-3"
+                  aria-label={`Options for customer ${cust.customer_id}`}
+                >
+                  <img src={EllipsisOutlined} alt="Options" className="w-full h-full" />
+                </button>
+                {showOptions === cust.customer_id && (
+                  <div
+                    ref={optionsRef}
+                    className="absolute top-12 right-0 bg-white shadow-lg rounded-md w-32 z-50 border"
+                  >
+                    <div
+                      onClick={() => handleEdit(cust.customer_id)}
+                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm"
+                    >
+                      Edit
+                    </div>
+                    <div
+                      onClick={() => handleDelete(cust.customer_id)}
+                      className="px-4 py-2 hover:bg-red-100 cursor-pointer text-sm text-red-600"
+                    >
+                      Delete
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
