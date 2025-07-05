@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import AppHeader from './AppHeader';
-import StatusCards from './StatusCards';
-import ApplicationsTable from './ApplicationsTable';
-import Sidebar from './Sidebar';
+import AppHeader from './DashboardHeader';
+import StatusCards from './DashboardTabsSection';
+import ApplicationsTable from './CustomerTable';
+import Sidebar from './SideNavbar';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('All Applications');
